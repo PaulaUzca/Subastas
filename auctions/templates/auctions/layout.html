@@ -1,0 +1,107 @@
+{% load static %}
+{%load custom_tags%}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}Auctions{% endblock %}</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link href="{% static 'auctions/css/styles.css' %}" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap" rel="stylesheet">
+        <link rel="icon" type="image/png" sizes="16x16"  href="/favicons/favicon-16x16.png">
+        <meta name="msapplication-TileColor" content="#ffffff"> 
+        <meta name="theme-color" content="#ffffff">
+
+        {% block styles%}
+        {% endblock %}
+    </head>
+    <body>
+        <header>
+        <section class="header__content">
+            <span class="header__logo fire__logo"></span>
+            <section class="header__title-container">
+                <a class="header__title" href="{% url 'index'%}"></a>
+                <p class="header__subtitle">Witchcraft and more</p>
+               
+            </section>
+
+            <section class="header__user">
+                <p class=>What are you up to?</p>
+                    <ul class="user__options">
+                        {% if user.is_authenticated %}
+                            <li class="user-option">
+                                <strong>{{ user.username|upper }} |</strong>
+                            </li>
+                            <li class="user-option">
+                                <a href="{% url 'logout' %}">Log Out</a>
+                            </li>
+                        {% else %}
+                            <li class="user-option">
+                                <a  href="{% anchor 'login' 'firstfield' %}">Login |</a>
+                            </li>
+                            <li class="user-option">
+                                <a href="{% anchor 'register' 'firstfield' %}">Register</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+            <a class="button button__secundary" href="{% anchor 'new-listing' 'firstfield'%}">New Listing</a>
+
+            </section>
+</section>
+          
+            <ul class="header__menu">
+                <li class="menu-item categories"><a href="#">Categories</a>
+                <ul class="category__menu">
+                    <li><a href="/category/poison">poison</a></li>
+                    <li><a href="/category/amarre">amarre</a></li>
+                    <li><a href="/category/course">curse</a></li>
+                    <li><a href="/category/clothes">clothes</a></li>
+                    <li><a href="/category/supplies">supplies</a></li>
+                    <li><a href="/category/other">other</a></li>
+            
+                </ul>
+                </li>
+                <li class="menu-item"><a href="{% anchor 'mylistings' 'firstfield' %}">My listings</a></li>
+                <li class="menu-item"><a href="{% anchor 'watchlist' 'firstfield'%}">Watchlist</a></li>
+            </ul>
+           <div class="header__waves"></div>
+        </header>
+
+        <section class="layout__main">
+            <section class="popup">
+                <h3 class="pop-message"></h3>
+                <button class="popup__close" id="close">close</button>
+            </section>
+            {% block body %}
+            {% endblock %}
+        </section>
+
+        <footer>
+    
+        </footer>
+     
+        <script>
+            popup= document.querySelector(".popup");
+            pop_message= document.querySelector(".pop-message");
+            document.getElementById("close").addEventListener("click",function(){
+                popup.style.display = "None"
+            })
+            function pop(message){
+                popup.style.display = "flex"
+                pop_message.innerHTML = message
+            }
+              
+
+            
+        </script>
+
+        {% block script%}
+
+        {% endblock %}
+    </body>
+</html>
+

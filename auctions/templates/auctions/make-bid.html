@@ -1,0 +1,163 @@
+{% extends "auctions/layout.html" %}
+{% load static %}
+
+{% block styles%}
+<link rel="stylesheet" href="{% static 'auctions/css/make-bid.css'%}">
+{% endblock%}
+
+{% block body%}
+<main>
+    <article class="article__info">
+        <h2>{{article.title}}</h2>
+        <div class= "article__info-topdetails">
+            {% if article.closed %}
+            <p class="article__state closed">CLOSED</p>
+            {% else %}
+            <p class="article__state open">OPEN</p>
+            {% endif %}
+            <p class="details--category">{{article.category}}</p>
+            <p>Watching: {{article.watchers.count}}</p>
+        </div>
+        <img class="image__container" src={{article.photo}}></img>
+        <ul class="article__info--details">
+            
+            <li>Owner: {{article.owner}}</li>
+            <li>Published on {{article.date}}</li>
+            <li>Initial price: {{article.price}}$</li>
+            <li class="details--description">Description:
+                <div>
+                    <p>{{article.description}} Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quo expedita voluptatem, voluptatum qui corporis ipsam, iure sapiente distinctio sunt in quidem ut cupiditate! Corrupti sint quasi ipsam voluptas magnam ad.</p>
+                </div>
+            </li>
+        </ul>
+    </article>
+    <section class="bid__section">
+        <div class="bid__section--setbid">
+            <div class="bid__section--message">
+            {% if article.closed %}
+                {% if article.winner == user%}
+                <h3>Congratulaions! You won this bid! The owner will be contacting you soon</h3>
+                {%else%}
+                <h3>This Bid is Closed! The winner is @<b> {{currentbid.bidder}}</b> with <b>{{currentbid.amount}}$</b> </h3>
+                {% endif %}
+            {%else%}
+                {% if user == article.owner%}
+                    <h3>Right now your listing has a winner bid at {{currentbid.amount}}$. Would you like to close this listing?</h3>
+                        <form action="{% url 'make-bid' article.id%}" method="post">
+                        {% csrf_token%}
+                        <input class="button button__secundary" type="submit" name="close" value="Close Bid">
+                        </form>
+                {%else%}
+                    {% if user == currentbid.bidder%}
+                        <h3>Your bid is at the top!</h3>
+                        <p>You can't make more bids on this articel</p>
+                        </div>  
+                    {% else %}
+                        <h3>Set your price</h3>
+                        <p>Bid must be bigger than {{currentbid.amount}}$</p>
+                        </div>
+                        <form action="{% url 'bid-manager'%}" method="post" id="bid-form">
+                            {% csrf_token%}
+                            <input class="field form__field--number" type="number" name="bid" placeholder="{{currentbid.amount|add:1}}$" min={{currentbid.amount|add:1}}>
+                            <input class="button button__secundary"type="submit" value="Bid">
+                        </form>
+                    {% endif %}
+                {%endif%}
+            {% endif %}
+        </div>
+        <div class="bid__section--bidhistory">
+            <h3>Bid history: </h3>
+            <p>{{article.bids.count}} bids on this listing</p>
+                <ul class="bid__history">
+                    {{bids}}
+                </ul>
+        </div>
+    </section>
+</main>
+
+    <section class = "section__below">
+       
+    <aside class="comment__section">
+        <h3>Comments</h3>
+        <form action="{% url 'comment-manager'%}"method="post" id="form-comment">
+            {% csrf_token%}
+            <textarea id="textbox" class="field form__field--block" name="comment" placeholder="What do you think about this listing?"></textarea>
+            <input class="button button__primary" type="submit" value="Publish">
+        </form>
+        <section class="comment__container" id="comments">
+            {{comments}}
+        </section>
+    </aside>
+
+    {% if user == article.owner%}
+    <button class="button button__red">Delete Listing</button>
+    {% endif %}
+    </section>
+
+{% endblock %}
+
+{% block script%}
+<script src="{%static 'auctions/scripts/jquery-3.6.0.js' %}"></script>
+<script>
+
+     $(document).ready(function(){
+        $("#form-comment").submit(function(e) {
+        e.preventDefault(); // avoid to execute the actual submit of the form.
+        var form = $(this);
+        var url = form.attr('action');
+        data= $(this).serializeArray()
+        data.push({name:"listing", value:"{{article.id}}"})
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: data,
+            success: function(data)
+            {
+                if(data == "failed")
+                {
+                        pop("You must be signed in to leave a comment")
+                }
+                else{
+                    $("#comments").html(data);
+                    $(".comment:last-child").addClass("new-posted")
+                    $("#textbox").val('')
+                }
+               
+            },
+            error: function(data){
+                console.log("no response")
+            }
+            });
+        });
+
+        $("#bid-form").submit(function(e){
+            e.preventDefault();
+            data= $(this).serializeArray()
+            data.push({name:"listing", value:"{{article.id}}"})
+            $.ajax({
+                type: "POST",
+                url: $(this).attr('action'),
+                data: data,
+                success: function(data)
+                {
+                    if(data == "failed")
+                    {
+                        pop("You must be signed in to make a bid")
+                    }
+                    else{
+                        $(".bid__history").html(data)
+                        $(".bid__history--item:first-child").addClass("new-posted")
+                        $(".bid__section--message").html("<h3>Your bid is at the top!</h3><p>You can't make more bids on this articel</p>")
+                        $(".bid__history").scrollTop(0)
+                        $("#bid-form").hide();  
+                    }
+                    
+                },
+                error: function(data){
+                    console.log("no response")
+                }
+                });
+            });
+    });
+</script>
+{% endblock %}

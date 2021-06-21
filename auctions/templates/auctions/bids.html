@@ -1,0 +1,5 @@
+{% for bid in bids reversed%}
+    <li class="bid__history--item"><b>{{bid.amount}}$</b> - {{bid.date}} | {{bid.bidder}}</li>
+{% empty%}
+    <p>No bids for this listing yet</p>
+{%endfor%}

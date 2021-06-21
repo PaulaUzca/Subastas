@@ -1,0 +1,10 @@
+{% for comment in comments reversed%}
+<div class="comment">
+    <div class="user--image"></div>
+    <p class="user--name">{{comment.user}}</p>
+    <p class="user--comment">{{comment.comment}}</p>
+    <p class="user--date">{{comment.date}}</p>
+</div>
+{% empty%}
+<p>No comments on this listing...yet</p>
+{% endfor %}

@@ -1,0 +1,45 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+    <h2>Register</h2>
+
+    <section class="form__container">
+
+    {% if message %}
+        <p class="simple__message">{{ message }}</p>
+    {% endif %}
+
+    <form action="{% url 'register' %}" method="post">
+        {% csrf_token %}
+        <div class="form-group" id="firstfield">
+            <input class="field form__field--short" autofocus type="text" name="username" placeholder="Username">
+        </div>
+        <div class="form-group">
+            <input class="field form__field--long" type="email" name="email" placeholder="Email Address">
+        </div>
+        <div class="form-group">
+
+            <select name="gremio">
+                {% for gremio in gremios %}
+                <option value="{{gremio.id}}">{{gremio}}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <input class="field form__field--short" type="password" name="password" placeholder="Password">
+        </div>
+        <div class="form-group">
+            <input class="field form__field--short" type="password" name="confirmation" placeholder="Confirm Password">
+        </div>
+        <input class="button button__primary" type="submit" value="Register">
+    </form>
+
+    <p class="simple__message">
+        <br>
+    Already have an account? <a href="{% url 'login' %}">Log In here.</a>
+    </p>   
+</section>
+
+{% endblock %}

@@ -1,0 +1,216 @@
+main{
+    width: 100%;
+    min-width: 320px;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+h2{
+    text-align: left;
+}
+.article__info{
+    width: 100%;
+    max-width: 400px;
+    padding: 0px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.article__state{
+    font-size: 1.6rem;
+    font-weight: bold;
+    padding: 5px;
+    line-height: 1.6rem;
+    border-radius: 30px;
+}
+.article__info-topdetails{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 1.6rem;
+}
+.article__info-topdetails p{
+    margin-left: 6px;
+}
+.open{
+    background-color: var(--softgreen);
+}
+.closed{
+    background-color: var(--softred);
+}
+.image__container{
+    height: auto;
+    margin: 0 auto;
+}
+li{
+    font-size: var(--highsize);
+    list-style: none;
+}
+.article__info--details{
+    width: 100%;
+    margin-top: 10px;
+}
+.details--category{
+    width: fit-content;
+    background-color: var(--mywhite);
+    border-radius: 30px;
+    padding: 2px;
+}
+
+.details--description div{
+    width: 100%;
+    height: 150px;
+    padding: 10px 5px;
+    overflow-y: scroll;
+    background-color: var(--pinklight);
+    border-radius: 5px;
+}
+
+.field{
+    display: inline-block;
+}
+.bid__section{
+    width: fit-content;
+    margin-top: 50px;
+    margin-left: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.bid__section--bidhistory{
+    margin-top: 15px;
+}
+.bid__history{
+    width: 200px;
+    max-width: 250px;
+    max-height: 200px;
+    display: flex;
+    flex-flow: column;
+    scroll-behavior: smooth;
+    overflow-y: scroll;
+    padding: 10px;
+    background-color: var(--pinklight);
+    border-radius: 5px;
+
+}
+.bid__history li:first-child{
+    background-color: var(--softgreen);
+
+}
+.bid__history--item{
+    width: 150px;
+    margin: 10px auto;
+    border: 1px solid;
+    border-color: black;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: var(--mywhite);
+}
+
+.comment__section{
+    width: 100%;
+    max-width: 450px;
+    padding: 0px 10px;
+    margin: 30px auto;
+}
+.comment__container{
+    max-height: 700px;
+    overflow-y: scroll;
+    margin-top: 50px;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+}
+.comment__container::-webkit-scrollbar{
+    display: none;
+}
+.comment{
+    width: 90%;
+    min-height: 100px;
+    padding: 10px;
+    margin-bottom: 20px;
+    display: grid;
+    grid-template-columns: 40px auto;
+    grid-template-rows: 40px auto 20px;
+
+    background-color: var(--mywhite);
+    box-shadow: -1px 2px 5px rgba(0, 0, 0, 0.25);
+    border-radius: 0px 10px 10px 10px;
+}
+.new-posted{
+    opacity: 0.2;
+  animation-name: bounceIn;
+  animation-duration: 450ms;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+@keyframes bounceIn{
+    0%{
+      opacity: 0.2;
+      transform: scale(0.3) translate3d(0,0,0);
+    }
+    50%{
+      opacity: 0.9;
+      transform: scale(1.1);
+    }
+    80%{
+      opacity: 1;
+      transform: scale(0.89);
+    }
+    100%{
+      opacity: 1;
+      transform: scale(1) translate3d(0,0,0);
+    }
+}
+
+.user--image{
+    grid-column: 1;
+    grid-row: 1;
+    height: 32px;
+    width: 32px;
+    background-color: gray;
+    border-radius: 50%;
+}
+.user--name{
+    margin: 0px;
+    grid-column: 2;
+    grid-row: 1;
+    font-size: var(--highsize);
+    color: var(--darkpink)
+}
+.user--comment{
+    grid-column: span 2;
+    grid-row: 2;
+    width: 100%;
+    font-size: var(--highsize);
+}
+.user--date{
+    font-size: var(--textsize);
+    grid-column: span 2;
+    grid-row: 3;
+}
+
+.section__below{
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+@media (min-width: 700px) {
+    main{
+        flex-direction: row;
+        margin: 0 auto;
+        justify-content: space-evenly;
+        align-items: flex-start;
+    }
+    
+    .bid__section{
+        align-items: flex-start;
+    }
+    .bid__history{
+        height: 100%;
+        max-height: 350px;
+    }
+}

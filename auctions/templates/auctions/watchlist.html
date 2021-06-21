@@ -1,0 +1,33 @@
+{% extends "auctions/layout.html" %}
+{% load static %}
+
+{% block styles%}
+<link rel="stylesheet" href="{% static 'auctions/css/index.css' %}">
+{% endblock %}
+
+{% block body%}
+<h2>Watchlist</h2>
+<main id="firstfield">
+    {% for listing in watchlist%}
+    <article class="article__container">
+        <a class="image__container--link" href="{% url 'make-bid' listing.id%}" onclick="console.log('clicked bid link too')">
+            <section class="image__container" value="{{listing.id}}" style="background-image: url({{listing.photo}})">
+            </section>
+            </a>
+            <section class="article__description">
+               <div class="article--title"><p> <b>{{ listing.title }}: </b>{{ listing.description}}</p></div> 
+                <div class="article__details">
+                    <p class="article--price">${{ listing.price }}</p>
+                    <div class="article--info">
+                        <p>{{listing.owner}}</p>
+                        <p>{{listing.category}}</p>
+                    </div>
+                </div>
+            </section>
+        </article>
+    {% empty%}
+    <p>You are watching 0 listings</p>
+    {% endfor%}
+    
+</main>
+{% endblock %}

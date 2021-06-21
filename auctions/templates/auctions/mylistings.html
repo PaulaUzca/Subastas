@@ -1,0 +1,33 @@
+{% extends "auctions/layout.html"%}
+{% load static%}
+{%load custom_tags%}
+
+{% block styles%}
+<link rel="stylesheet" href="{% static 'auctions/css/index.css' %}">
+{% endblock %}
+
+{% block body%}
+    <h2>My Listings</h2>
+    <main id="firstfield">
+        {% for listing in mylistings %}
+       <article class="article__container">
+           <a class="image__container--link" href="{% url 'make-bid' listing.id%}" onclick="console.log('clicked bid link too')">
+           <section class="image__container" value="{{listing.id}}" style="background-image: url({{listing.photo}})">
+           </section>
+           </a>
+           <section class="article__description">
+              <div class="article--title"><p> <b>{{ listing.title }}: </b>{{ listing.description}}</p></div> 
+               <div class="article__details">
+                   <p class="article--price">${{ listing.bids.last.amount }}</p>
+                   <div class="article--info">
+                       <p>{{listing.category}}</p>
+                   </div>
+               </div>
+           </section>
+       </article>
+       {%empty%}
+        <p>You haven't made any Listings yet</p>
+        <a class="button button__secundary" href="{% anchor 'new-listing' 'firstfield'%}">New Listing</a>
+       {% endfor %}
+   </main>
+{% endblock %}
