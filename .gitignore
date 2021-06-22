@@ -1,5 +1,6 @@
 
 secret_settings.py
+.env
 
 # Django #
 *.log
